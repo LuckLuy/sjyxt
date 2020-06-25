@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>+
+
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <script src="js/vue.js"></script>
+    <script src="js/axios.js"></script>
+    <link rel="stylesheet" href="bootvue/css/bootstrap.css">
+
+
+</head>
+<body>
+    <div>
+        <!--/*@thymesVar id="uid" type="freemarker"*/-->
+        <p th:text="'用户名ID:' + ${uid}" >123</p>
+        <!--/*@thymesVar id="name" type="freemarker"*/-->
+        <p th:text="'用户名name:' + ${name}" >12</p>
+
+    </div>
+
+</body>
+</html>
