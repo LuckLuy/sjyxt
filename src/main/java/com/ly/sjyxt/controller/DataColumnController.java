@@ -17,4 +17,20 @@ import org.springframework.stereotype.Controller;
 @RequestMapping("/data-column")
 public class DataColumnController {
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
