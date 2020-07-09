@@ -1,9 +1,9 @@
 package com.ly.sjyxt.service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ly.sjyxt.common.ResponseBase;
-import com.ly.sjyxt.entity.DataParm;
-import com.baomidou.mybatisplus.service.IService;
+import com.ly.sjyxt.entity.SysDataParm;
 
 /**
  * <p>
@@ -13,7 +13,7 @@ import com.baomidou.mybatisplus.service.IService;
  * @author ly
  * @since 2020-06-10
  */
-public interface IDataParmService {
+public interface SysDataParmService {
 
   /**
    *  查询 所有点数据
@@ -28,7 +28,12 @@ public interface IDataParmService {
    * @param dataParm
    * @return
    */
-  ResponseBase add(DataParm dataParm);
+  ResponseBase add(SysDataParm dataParm);
 
   ResponseBase delete(String[] parm_ids);
+
+  ResponseBase edit(SysDataParm dataParm);
+
+
+  ResponseBase editParmNumByParmId(JSONArray array);
 }

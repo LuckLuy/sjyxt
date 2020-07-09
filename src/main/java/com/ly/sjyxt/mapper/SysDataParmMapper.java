@@ -1,11 +1,8 @@
 package com.ly.sjyxt.mapper;
 
-import com.ly.sjyxt.entity.DataParm;
-import com.baomidou.mybatisplus.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import com.ly.sjyxt.entity.SysDataParm;
+import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -17,7 +14,8 @@ import java.util.List;
  * @author ly
  * @since 2020-06-10
  */
-public interface DataParmMapper {
+@Component(value ="DataParmMapper")
+public interface SysDataParmMapper {
 
 
   /**
@@ -50,13 +48,13 @@ public interface DataParmMapper {
       "  <when  test='ds_id!=null'> and  s.ds_id=#{ds_id} </when>   " +
       "  ORDER BY s.parm_num " +
       "</script>")
-  List<DataParm> querySysDataParm(
+  List<SysDataParm> querySysDataParm(
       @Param("parameter") String parameter,
       @Param("ds_id") String ds_id);
 
   @Insert({" insert into sys_data_parm (PARM_ID, DS_ID, PARM_CODE, PARM_NAME, PARM_TYPE, PARM_NUM, DEF_VALUE, PARM_DESC, PARM_DATA_TYPE, OTHER,PARM_QUERY_TYPE) " +
       "  values ( #{parm_id},#{ds_id},#{parm_code},#{parm_name},#{parm_type},#{parm_num},#{def_value},#{parm_desc},#{parm_data_type},#{other},#{parm_query_type} )"})
-  int add(DataParm dataParm);
+  int add(SysDataParm dataParm);
 
   @Delete("<script>" +
       "delete from sys_data_parm " +
@@ -67,4 +65,23 @@ public interface DataParmMapper {
       "</foreach>  " +
       "</script>")
   int delete( String[] parm_ids);
+
+
+  @Update({" update SYS_DATA_PARM " +
+      "    set PARM_CODE = #{parm_code}, " +
+      "        PARM_NAME = #{parm_name}, " +
+      "        PARM_TYPE = #{parm_type}, " +
+      "        PARM_NUM = #{parm_num}, " +
+      "        DEF_VALUE  = #{def_value}, " +
+      "        PARM_DESC = #{parm_desc}, " +
+      "        PARM_DATA_TYPE = #{parm_data_type}, " +
+      "        OTHER = #{other}, " +
+      "        PARM_QUERY_TYPE = #{parm_query_type} " +
+      "  where PARM_ID = #{parm_id} "})
+  int edit(SysDataParm dataParm);
+
+  @Update({" update SYS_DATA_PARM " +
+      "    set PARM_NUM = #{parm_num} " +
+      "  where PARM_ID = #{parm_id} "})
+  public int editParmNumByParmId(@Param("parm_id") String parm_id, @Param("parm_num") int parm_num);
 }

@@ -1,6 +1,6 @@
 package com.ly.sjyxt.common;
 
-import com.ly.sjyxt.entity.DataConnect;
+import com.ly.sjyxt.entity.SysDataConnect;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
@@ -33,7 +33,7 @@ public class JDBCUtil {
     /**
      * Connection 对象的数据库能够提供描述其表、所支持的 SQL 语法、存储过程、此连接功能等等的信息。此信息是使用 getMetaData 方法获得的。
      */
-    public static Connection getConnection(DataConnect dbLink) {
+    public static Connection getConnection(SysDataConnect dbLink) {
         String driver = "";
         String url = "";
         Connection conn = null;

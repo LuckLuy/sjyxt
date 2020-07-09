@@ -108,7 +108,7 @@ oracleDruid:
   resetEnable: false
 
 # 秘钥
-db_secretKey: 83abe08f8b1040b2a75b6faf29384cfd
+#db_secretKey: 83abe08f8b1040b2a75b6faf29384cfd
 
 swagger:
   production: false

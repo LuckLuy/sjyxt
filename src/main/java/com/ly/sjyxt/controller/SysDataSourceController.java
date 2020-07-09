@@ -3,16 +3,14 @@ package com.ly.sjyxt.controller;
 
 import com.ly.sjyxt.common.BaseApiService;
 import com.ly.sjyxt.common.ResponseBase;
-import com.ly.sjyxt.entity.DataSource;
-import com.ly.sjyxt.mapper.DataSourceMapper;
-import com.ly.sjyxt.service.IDataSourceService;
+import com.ly.sjyxt.entity.SysDataSource;
+import com.ly.sjyxt.service.SysDataSourceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import org.springframework.stereotype.Controller;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
@@ -30,10 +28,10 @@ import javax.annotation.Resource;
 @Api("数据源 界面管理")
 @RestController
 @RequestMapping("/dataSource/sysDataSoure")
-public class DataSourceController extends BaseApiService {
+public class SysDataSourceController extends BaseApiService {
 
   @Resource
-  private com.ly.sjyxt.service.IDataSourceService  iDataSourceService;
+  private SysDataSourceService iDataSourceService;
 
   @ApiOperation(value = "数据源信息管理-分页列表查询", notes = "数据源信息管理-分页列表查询")
   @PostMapping(value = "/list")
@@ -51,7 +49,7 @@ public class DataSourceController extends BaseApiService {
 
   @ApiOperation(value = "数据源-新增", notes = "数据源新增数据")
   @PostMapping(value = "/add")
-  public  ResponseBase add( @RequestBody DataSource dataSource) {
+  public  ResponseBase add( @RequestBody SysDataSource dataSource) {
     if (iDataSourceService.add(dataSource)) {
       return setResultSuccess("新增成功！！！");
     } else {
@@ -62,7 +60,7 @@ public class DataSourceController extends BaseApiService {
 
   @ApiOperation(value = "数据源-新增", notes = "数据源新增数据")
   @PostMapping(value = "/edit")
-  public  ResponseBase edit( @RequestBody DataSource dataSource){
+  public  ResponseBase edit( @RequestBody SysDataSource dataSource){
     if(iDataSourceService.edit(dataSource)){
       return  setResultSuccess("修改成功。");
     }else{

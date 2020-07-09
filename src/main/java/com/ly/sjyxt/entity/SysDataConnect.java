@@ -33,7 +33,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @ToString
 @TableName("SYS_DATA_CONNECT")
 @ApiModel("数据库信息表_SYS_DATA_CONNECT")
-public  class DataConnect implements Serializable {
+public  class SysDataConnect implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

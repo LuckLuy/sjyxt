@@ -8,17 +8,16 @@ import com.ly.sjyxt.common.BaseApiService;
 import com.ly.sjyxt.common.DataSourceFactory;
 import com.ly.sjyxt.common.JDBCUtil;
 import com.ly.sjyxt.common.ResponseBase;
-import com.ly.sjyxt.entity.DataConnect;
-import com.ly.sjyxt.mapper.DataColumnMapper;
-import com.ly.sjyxt.mapper.DataConnectMapper;
-import com.ly.sjyxt.mapper.DataParmMapper;
-import com.ly.sjyxt.mapper.DataSourceMapper;
-import com.ly.sjyxt.service.IDataConnectService;
+import com.ly.sjyxt.entity.SysDataConnect;
+import com.ly.sjyxt.mapper.SysDataColumnMapper;
+import com.ly.sjyxt.mapper.SysDataConnectMapper;
+import com.ly.sjyxt.mapper.SysDataParmMapper;
+import com.ly.sjyxt.mapper.SysDataSourceMapper;
+import com.ly.sjyxt.service.SysDataConnectService;
 import com.ly.sjyxt.util.BeanHelper;
-import com.ly.sjyxt.util.KeyGenerator;
 import com.ly.sjyxt.util.StringUtil;
 import com.petrochina.sso.passwordencodeclient.PasswordEncodeDecode;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -36,22 +35,22 @@ import java.util.List;
  * @since 2020-06-10
  */
 @Service
-public class DataConnectServiceImpl extends BaseApiService implements IDataConnectService {
+public class SysDataConnectServiceImpl extends BaseApiService implements SysDataConnectService {
 
   @Resource
-  private DataConnectMapper dataConnectMapper;
+  private SysDataConnectMapper dataConnectMapper;
 
   @Resource
-  private DataSourceMapper dataSourceMapper;
+  private SysDataSourceMapper dataSourceMapper;
 
   @Resource
-  private DataParmMapper dataParmMapper;
+  private SysDataParmMapper dataParmMapper;
 
   @Resource
-  private DataColumnMapper dataColumnMapper;
-/*
-    @Autowired
-    private com.ly.sjyxt.util.KeyGenerator key;*/
+  private SysDataColumnMapper dataColumnMapper;
+
+   @Autowired(required = false)
+    private com.ly.sjyxt.util.KeyGenerator key;
 
   @Resource
   private DataSourceFactory dataSourceFactory;
@@ -59,8 +58,8 @@ public class DataConnectServiceImpl extends BaseApiService implements IDataConne
   /**
    *  @Value 这个注解的作用是 获取配置文件 application-dev.yml中的 db_secretKey 对应的值。
    */
-  @Value(value = "${db_secretKey}")
-  private String db_secretKey;
+ /* @Value(value = "${db_secretKey}")
+  private String db_secretKey;*/
 
   /**
    * 数据库链路测试
@@ -69,24 +68,24 @@ public class DataConnectServiceImpl extends BaseApiService implements IDataConne
    * @return
    */
   @Override
-  public Boolean testConnection(DataConnect dataConnect) {
+  public Boolean testConnection(SysDataConnect dataConnect) {
 
     String db_link_no = dataConnect.getDb_link_no();
     if (!StringUtil.isNull(db_link_no)) {
       //说明是编辑状态进行测试
       //查询原始数据
-      DataConnect dataConnectOld = dataConnectMapper.queryDataConnectById(db_link_no);
+      SysDataConnect dataConnectOld = dataConnectMapper.queryDataConnectById(db_link_no);
       //如果页面和原始数据密码一致,说明密码没有进行修改,直接解密
       if (dataConnectOld.getDb_pw().equals(dataConnect.getDb_pw())) {
         // 密码解码
-        PasswordEncodeDecode p = new PasswordEncodeDecode();
+      /*  PasswordEncodeDecode p = new PasswordEncodeDecode();
         String db_pw_decode = null;
         try {
           db_pw_decode = p.passwordDecode(db_secretKey, dataConnect.getDb_pw());
         } catch (Exception e) {
           e.printStackTrace();
-        }
-        dataConnect.setDb_pw(db_pw_decode);
+        }*/
+        dataConnect.setDb_pw(dataConnect.getDb_pw());
       }
 
     }
@@ -110,16 +109,16 @@ public class DataConnectServiceImpl extends BaseApiService implements IDataConne
   public JSONObject querySysDataConnect(String parameter, Integer pageNum, Integer pageSize) {
     // 页面显示的数据 多少行 多少页
     PageHelper.startPage(pageNum, pageSize);
-    List<DataConnect> list = dataConnectMapper.querySysDataConnect(parameter.toUpperCase());
+    List<SysDataConnect> list = dataConnectMapper.querySysDataConnect(parameter.toUpperCase());
     // PageInfo 实体类下的 当前页 、每页的数量、当前页的数量
-    PageInfo<DataConnect> pageInfoUserList = new PageInfo<DataConnect>(list);
+    PageInfo<SysDataConnect> pageInfoUserList = new PageInfo<SysDataConnect>(list);
 
     // 获取总记录数
     Long total = pageInfoUserList.getTotal();
     JSONObject obj = new JSONObject();
     obj.put("total", pageInfoUserList.getTotal());
-    List<DataConnect> listPage = new ArrayList<DataConnect>();
-    for (DataConnect dataConnect : pageInfoUserList.getList()) {
+    List<SysDataConnect> listPage = new ArrayList<SysDataConnect>();
+    for (SysDataConnect dataConnect : pageInfoUserList.getList()) {
       BeanHelper.nullToEmpty(dataConnect);
       listPage.add(dataConnect);
     }
@@ -136,21 +135,21 @@ public class DataConnectServiceImpl extends BaseApiService implements IDataConne
    */
   @Override
   @Transactional(rollbackFor = Exception.class)
-  public boolean addData_state(DataConnect dataConnect) {
+  public boolean addData_state(SysDataConnect dataConnect) {
     // 1，设置默认的主键
-    dataConnect.setDb_link_no(KeyGenerator.getKey());
+    dataConnect.setDb_link_no(key.getKey());
 
     //密码进行加密
     PasswordEncodeDecode p = new PasswordEncodeDecode();
 
-    String db_pw_encode = null;
+   /* String db_pw_encode = null;
     try {
       db_pw_encode = p.passwordEncode(db_secretKey, dataConnect.getDb_pw());
     } catch (Exception e) {
       e.printStackTrace();
-    }
+    }*/
 
-    dataConnect.setDb_pw(db_pw_encode);
+    dataConnect.setDb_pw(dataConnect.getDb_pw());
     //将对象中的null 转空字符串
     BeanHelper.nullToEmpty(dataConnect);
     int num = dataConnectMapper.addData_user(dataConnect);
@@ -174,20 +173,20 @@ public class DataConnectServiceImpl extends BaseApiService implements IDataConne
    */
   @Override
   @Transactional(rollbackFor = Exception.class)
-  public ResponseBase edit(DataConnect dataConnect) {
+  public ResponseBase edit(SysDataConnect dataConnect) {
 
-    DataConnect data_old = dataConnectMapper.queryDataConnectById(dataConnect.getDb_link_no());
+    SysDataConnect data_old = dataConnectMapper.queryDataConnectById(dataConnect.getDb_link_no());
     if(!data_old.getDb_pw().equals(dataConnect.getDb_pw())){
       //说明密码修改过,将最新的密码加密
       //密码进行加密
       PasswordEncodeDecode p= new PasswordEncodeDecode();
       String db_pw_encode =null;
-      try {
+    /*  try {
         db_pw_encode =p.passwordEncode(db_secretKey,dataConnect.getDb_pw());
       } catch (Exception e) {
         e.printStackTrace();
-      }
-      dataConnect.setDb_pw(db_pw_encode);
+      }*/
+      dataConnect.setDb_pw(dataConnect.getDb_pw());
     }
 
     //将对象中的null 转空字符串
@@ -255,7 +254,7 @@ public class DataConnectServiceImpl extends BaseApiService implements IDataConne
  * @返回类型: List<SysDataConnect>
  */
   @Override
-  public List<DataConnect> listAllDbState() {
+  public List<SysDataConnect> listAllDbState() {
     return dataConnectMapper.listAllDbState();
   }
 }

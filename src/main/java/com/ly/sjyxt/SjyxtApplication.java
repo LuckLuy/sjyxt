@@ -17,7 +17,8 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 @Slf4j
 @SpringBootApplication
-@MapperScan(basePackages= {"com.ly.sjyxt.mapper"})
+//@MapperScan(basePackages= {"com.ly.sjyxt.mapper"})
+@MapperScan("com.ly.sjyxt.mapper")
 @EnableEncryptableProperties
 public class SjyxtApplication {
 

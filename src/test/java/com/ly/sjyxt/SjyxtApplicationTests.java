@@ -1,11 +1,8 @@
 package com.ly.sjyxt;
 
-import com.ly.sjyxt.entity.DataConnect;
-import com.ly.sjyxt.mapper.DataConnectMapper;
-import com.ly.sjyxt.service.IDataConnectService;
-import org.apache.catalina.mbeans.UserMBean;
+import com.ly.sjyxt.mapper.SysDataConnectMapper;
+import com.ly.sjyxt.service.SysDataConnectService;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
@@ -14,9 +11,9 @@ import javax.annotation.Resource;
 class SjyxtApplicationTests {
 
 	@Resource
-	private DataConnectMapper dataConnectMapper;
+	private SysDataConnectMapper dataConnectMapper;
 	@Resource
-	private IDataConnectService  iDataConnectService;
+	private SysDataConnectService iDataConnectService;
 	@Test
 	void contextLoads() {
 		System.out.println(del_space("   123  2 23 3 "));

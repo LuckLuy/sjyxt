@@ -1,13 +1,8 @@
 package com.ly.sjyxt.service;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ly.sjyxt.common.ResponseBase;
-import com.ly.sjyxt.entity.DataSource;
-import com.baomidou.mybatisplus.service.IService;
-import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
+import com.ly.sjyxt.entity.SysDataSource;
 
 /**
  * <p>
@@ -17,7 +12,7 @@ import java.util.List;
  * @author ly
  * @since 2020-06-10
  */
-public interface IDataSourceService  {
+public interface SysDataSourceService {
 
   /**
    *   数据源查询接口
@@ -32,14 +27,14 @@ public interface IDataSourceService  {
    * @param dataSource
    * @return
    */
-  boolean  add (DataSource dataSource);
+  boolean  add (SysDataSource dataSource);
 
   /**
    *   修改数据源
    * @param dataSource
    * @return
    */
-  boolean edit (DataSource dataSource);
+  boolean edit (SysDataSource dataSource);
 
   ResponseBase delete(String[] db_ids);
 }

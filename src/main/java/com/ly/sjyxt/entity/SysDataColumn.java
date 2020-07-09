@@ -29,7 +29,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @TableName("SYS_DATA_COLUMN")
 @ApiModel("数据源字段表_SYS_DATA_COLUMN")
-public class DataColumn implements Serializable{
+public class SysDataColumn implements Serializable{
 
     private static final long serialVersionUID = 1L;
 

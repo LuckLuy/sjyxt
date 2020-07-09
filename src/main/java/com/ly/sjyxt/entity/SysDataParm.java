@@ -29,7 +29,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @TableName("SYS_DATA_PARM")
 @ApiModel("数据源参数表_SYS_DATA_PARM")
-public class DataParm implements Serializable{
+public class SysDataParm implements Serializable{
 
     private static final long serialVersionUID = 1L;
 

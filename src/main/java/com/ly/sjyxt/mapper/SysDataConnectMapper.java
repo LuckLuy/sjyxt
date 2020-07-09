@@ -1,8 +1,8 @@
 package com.ly.sjyxt.mapper;
 
-import com.ly.sjyxt.entity.DataConnect;
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.ly.sjyxt.entity.SysDataConnect;
 import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -14,7 +14,8 @@ import java.util.List;
  * @author ly
  * @since 2020-06-10
  */
-public interface DataConnectMapper {
+@Component(value ="DataConnectMapper")
+public interface SysDataConnectMapper {
 
   /**
    * 根据 数据库链接名称  db_link_name 或者 数据库ip 查询数据
@@ -26,7 +27,7 @@ public interface DataConnectMapper {
       "   from sys_data_connect t " +
       "  where (upper(trim(t.db_link_name)) LIKE CONCAT(CONCAT('%', #{parameter}), '%') or" +
       "   upper(trim(t.db_ip)) LIKE CONCAT(CONCAT('%', #{parameter}), '%')) order by t.sequ_num"})
-  List<DataConnect> querySysDataConnect(@Param("parameter") String parameter);
+  List<SysDataConnect> querySysDataConnect(@Param("parameter") String parameter);
 
 
   /**
@@ -70,7 +71,7 @@ public interface DataConnectMapper {
       "    #{db_ver}, " +
       "    #{issid}, " +
       "    #{other}) ")
-  public int addData_user(DataConnect dataConnect);
+  public int addData_user(SysDataConnect dataConnect);
 
 
   /**
@@ -83,7 +84,7 @@ public interface DataConnectMapper {
       "   from sys_data_connect t " +
       "  where (upper(trim(t.db_link_name)) LIKE CONCAT(CONCAT('%', #{parameter}), '%') or" +
       "   upper(trim(t.db_ip)) LIKE CONCAT(CONCAT('%', #{parameter}), '%')) order by t.sequ_num"})
-  public List<DataConnect> getDatabase(@Param("parameter") String parameter);
+  public List<SysDataConnect> getDatabase(@Param("parameter") String parameter);
 
   /**
    * 根据数据库 数据库链接编号 查询数据
@@ -92,7 +93,7 @@ public interface DataConnectMapper {
    * @return
    */
   @Select({"select * from sys_data_connect t where t.db_link_no = #{db_link_no}"})
-  DataConnect queryDataConnectById(@Param("db_link_no") String db_link_no);
+  SysDataConnect queryDataConnectById(@Param("db_link_no") String db_link_no);
 
   /**
    * 修改链路信息
@@ -112,7 +113,7 @@ public interface DataConnectMapper {
       "        DB_VER       = #{db_ver}, " +
       "        ISSID        = #{issid} " +
       "  where DB_LINK_NO = #{db_link_no} "})
-  int  edit(DataConnect dataConnect);
+  int  edit(SysDataConnect dataConnect);
 
 
   /**
@@ -145,6 +146,6 @@ public interface DataConnectMapper {
   @Select({" select * " +
       "   from sys_data_connect t " +
       "  where t.db_state='启用' order by t.sequ_num "})
-  List<DataConnect> listAllDbState();
+  List<SysDataConnect> listAllDbState();
 
 }

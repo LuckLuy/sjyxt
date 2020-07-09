@@ -1,9 +1,10 @@
 package com.ly.sjyxt.config;
-
+import com.github.xiaoymin.swaggerbootstrapui.annotations.EnableSwaggerBootstrapUI;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.Profiles;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
@@ -20,7 +21,8 @@ import java.util.ArrayList;
  **/
 @Configuration
 @EnableSwagger2 //开启swaager
-public class SwaggerConfig {
+@EnableSwaggerBootstrapUI
+public class SwaggerConfig implements WebMvcConfigurer {
     //http://localhost:8080/swagger-ui.html
     //http://localhost:9895/swagger-ui.html
     //配置类swagger 的docket的bean 实例
@@ -33,7 +35,6 @@ public class SwaggerConfig {
         //通过environment.acceptsProfiles 判断是否处在自己设定的环境中。
         // 如果enable 为false，则swagger不能浏览器中访问。
         boolean hjbl = environment.acceptsProfiles(profiles);
-        System.out.println(hjbl);
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .groupName("鲁先生")
@@ -44,8 +45,8 @@ public class SwaggerConfig {
                 // any() 扫描全部
                 // none() 不扫描
                 //withClassAnnotaction 扫描类上的注解。
-                .apis(RequestHandlerSelectors.basePackage("com.ly.sjyxt.controller"))
-                //.apis(RequestHandlerSelectors.any())
+                .apis(RequestHandlerSelectors.basePackage("com.ly.sjyxt.api"))
+                .apis(RequestHandlerSelectors.any())
                 //.paths(PathSelectors.any())
                 .build();
     }

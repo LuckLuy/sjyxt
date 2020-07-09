@@ -7,13 +7,11 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ly.sjyxt.common.BaseApiService;
 import com.ly.sjyxt.common.ResponseBase;
-import com.ly.sjyxt.entity.DataParm;
-import com.ly.sjyxt.entity.DataSource;
-import com.ly.sjyxt.mapper.DataColumnMapper;
-import com.ly.sjyxt.mapper.DataParmMapper;
-import com.ly.sjyxt.mapper.DataSourceMapper;
-import com.ly.sjyxt.service.IDataSourceService;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.ly.sjyxt.entity.SysDataSource;
+import com.ly.sjyxt.mapper.SysDataColumnMapper;
+import com.ly.sjyxt.mapper.SysDataParmMapper;
+import com.ly.sjyxt.mapper.SysDataSourceMapper;
+import com.ly.sjyxt.service.SysDataSourceService;
 import com.ly.sjyxt.util.BeanHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,16 +30,16 @@ import java.util.List;
  * @since 2020-06-10
  */
 @Service
-public class DataSourceServiceImpl extends BaseApiService implements IDataSourceService {
+public class SysDataSourceServiceImpl extends BaseApiService implements SysDataSourceService {
 
   @Resource
-  private  DataSourceMapper dataSourceMapper;
+  private SysDataSourceMapper dataSourceMapper;
 
   @Resource
-  private DataParmMapper dataParmMapper;
+  private SysDataParmMapper dataParmMapper;
 
   @Resource
-  private DataColumnMapper dataColumnMapper;
+  private SysDataColumnMapper dataColumnMapper;
 
   /**
    * @throws
@@ -58,17 +56,17 @@ public class DataSourceServiceImpl extends BaseApiService implements IDataSource
   public JSONObject querySysDataSoure(String parameter, String db_link_no, Integer pageNum, Integer pageSize) {
 
     PageHelper.startPage(pageNum,pageSize);
-    List<DataSource>  list= dataSourceMapper.querySysDataSoure(parameter.toUpperCase(),
+    List<SysDataSource>  list= dataSourceMapper.querySysDataSoure(parameter.toUpperCase(),
         db_link_no == null || "".equals(db_link_no) ? null :db_link_no);
 
     // 分页数据
-    PageInfo<DataSource> pageInfoList = new PageInfo<DataSource>(list);
+    PageInfo<SysDataSource> pageInfoList = new PageInfo<SysDataSource>(list);
 
     Long total = pageInfoList.getTotal();
     JSONObject obj = new JSONObject();
     obj.put("total",pageInfoList.getTotal());
-    List<DataSource> listPage = new ArrayList<DataSource>();
-    for(DataSource dataSource : pageInfoList.getList()){
+    List<SysDataSource> listPage = new ArrayList<SysDataSource>();
+    for(SysDataSource dataSource : pageInfoList.getList()){
       BeanHelper.nullToEmpty(dataSource);
       listPage.add(dataSource);
     }
@@ -78,7 +76,7 @@ public class DataSourceServiceImpl extends BaseApiService implements IDataSource
 
   @Override
   @Transactional(rollbackFor = Exception.class)
-  public boolean add( DataSource dataSource) {
+  public boolean add( SysDataSource dataSource) {
     BeanHelper.nullToEmpty(dataSource);
     int rows = dataSourceMapper.add(dataSource);
     boolean flag= false;
@@ -92,7 +90,7 @@ public class DataSourceServiceImpl extends BaseApiService implements IDataSource
 
   @Override
   @Transactional(rollbackFor = Exception.class)
-  public boolean edit(DataSource dataSource) {
+  public boolean edit(SysDataSource dataSource) {
     BeanHelper.nullToEmpty(dataSource);
     int row= dataSourceMapper.edit(dataSource);
     boolean b = false;

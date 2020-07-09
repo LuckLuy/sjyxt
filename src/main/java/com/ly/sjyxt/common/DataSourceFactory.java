@@ -1,15 +1,15 @@
 package com.ly.sjyxt.common;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.ly.sjyxt.entity.DataConnect;
-import com.ly.sjyxt.entity.DataSource;
-import com.ly.sjyxt.mapper.DataConnectMapper;
+import com.ly.sjyxt.entity.SysDataConnect;
+import com.ly.sjyxt.entity.SysDataSource;
+import com.ly.sjyxt.mapper.SysDataConnectMapper;
 import com.petrochina.sso.passwordencodeclient.PasswordEncodeDecode;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -31,13 +31,13 @@ public class DataSourceFactory {
     //保证了不同线程对这个变量进行操作时的可见性，即一个线程修改了某个变量的值，这新值对其他线程来说是立即可见的。（实现可见性）
     //禁止进行指令重排序。（实现有序性）
     //volatile 只能保证对单次读/写的原子性。i++ 这种操作不能保证原子性。
-    private  volatile Map<String, DruidDataSource> dataSourceMap=new HashMap<String, DruidDataSource>();
+    private  volatile Map<String, DataSource> dataSourceMap=new HashMap<String, DataSource>();
 
     @Resource
-    private DataConnectMapper dataConnectMapper;
+    private SysDataConnectMapper dataConnectMapper;
 
-    @Value(value = "${db_secretKey}")
-    private String db_secretKey;
+  /*  @Value(value = "${db_secretKey}")
+    private String db_secretKey;*/
 
 
     /**
@@ -47,10 +47,10 @@ public class DataSourceFactory {
     @PostConstruct
     public void init (){
 
-        List<DataConnect> connectList = dataConnectMapper.getDatabase("");
+        List<SysDataConnect> connectList = dataConnectMapper.getDatabase("");
         if(connectList != null && connectList.size()>0 ){
-            for(DataConnect dataConnect : connectList){
-                DruidDataSource dataSource = getDataSource(dataConnect);
+            for(SysDataConnect dataConnect : connectList){
+                DataSource dataSource = getDataSource(dataConnect);
 
                 dataSourceMap.put(dataConnect.getDb_link_no(),dataSource);
             }
@@ -64,7 +64,7 @@ public class DataSourceFactory {
      * @param
      * @return
      */
-    public DruidDataSource getDataSource (DataConnect DataConnect){
+    public DruidDataSource getDataSource (SysDataConnect DataConnect){
         String driver = "";
         String url = "";
         if (DataConnect.getDb_link_type().equalsIgnoreCase("ORACLE")) {
@@ -92,15 +92,15 @@ public class DataSourceFactory {
         }
         PasswordEncodeDecode p = new PasswordEncodeDecode();
         String db_pw_decode = null;
-        try {
+       /* try {
             db_pw_decode = p.passwordDecode(db_secretKey, DataConnect.getDb_pw());
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
         DruidDataSource datasource = new DruidDataSource();
         datasource.setUrl(url);
         datasource.setUsername(DataConnect.getDb_user());
-        datasource.setPassword(db_pw_decode);
+        datasource.setPassword(DataConnect.getDb_pw());
         datasource.setDriverClassName(driver);
         try {
             datasource.setFilters("stat,wall,slf4j");
@@ -125,12 +125,20 @@ public class DataSourceFactory {
         return datasource ;
     }
 
+    /**
+     *   获取JDBC 链接
+     * @param id
+     * @return
+     */
+    public DataSource getById(String id){
+        return  dataSourceMap.get(id);
+    }
 
     /**
      * 添加数据源管理
      * @param dataConnect
      */
-    public void addDataSource (DataConnect dataConnect){
+    public void addDataSource (SysDataConnect dataConnect){
         DruidDataSource dataSource = getDataSource(dataConnect);
         dataSourceMap.put(dataConnect.getDb_link_no(),dataSource);
     }

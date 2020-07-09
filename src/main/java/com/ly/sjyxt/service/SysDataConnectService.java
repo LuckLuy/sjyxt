@@ -2,8 +2,7 @@ package com.ly.sjyxt.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.ly.sjyxt.common.ResponseBase;
-import com.ly.sjyxt.entity.DataConnect;
-import org.apache.ibatis.annotations.Param;
+import com.ly.sjyxt.entity.SysDataConnect;
 
 import java.util.List;
 
@@ -15,14 +14,14 @@ import java.util.List;
  * @author ly
  * @since 2020-06-10
  */
-public interface IDataConnectService{
+public interface SysDataConnectService {
 
     /**
      * 测试 链路是否畅通
      * @param dataConnect
      * @return
      */
-    Boolean testConnection(DataConnect dataConnect);
+    Boolean testConnection(SysDataConnect dataConnect);
 
 
   /**
@@ -39,14 +38,14 @@ public interface IDataConnectService{
      * @param dataConnect
      * @return
      */
-    boolean addData_state(DataConnect dataConnect);
+    boolean addData_state(SysDataConnect dataConnect);
 
   /**
    *  修改链路信息
    * @param dataConnect
    * @return
    */
-    ResponseBase  edit(DataConnect dataConnect);
+    ResponseBase  edit(SysDataConnect dataConnect);
 
 
   /**
@@ -60,6 +59,6 @@ public interface IDataConnectService{
    *  查询启用状态下 显示顺序
    * @return
    */
-  List<DataConnect> listAllDbState();
+  List<SysDataConnect> listAllDbState();
 
 }

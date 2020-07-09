@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Value;
 
 public class MyEncryptablePropertyResolver implements EncryptablePropertyResolver {
 
-    @Value(value = "${db_secretKey}")
-    private String db_secretKey;
+    /*@Value(value = "${db_secretKey}")
+    private String db_secretKey;*/
 
     //自定义解密方法
     @Override
@@ -15,11 +15,13 @@ public class MyEncryptablePropertyResolver implements EncryptablePropertyResolve
         PasswordEncodeDecode p=new PasswordEncodeDecode();
         if (null != s && s.startsWith(MyEncryptablePropertyDetector.ENCODED_PASSWORD_HINT)) {
             //此处进行解密处理
-            try {
+          /*  try {
                 return p.passwordDecode(db_secretKey, s.substring(MyEncryptablePropertyDetector.ENCODED_PASSWORD_HINT.length()));
             } catch (Exception e) {
                 e.printStackTrace();
-            }
+            }*/
+            return s.substring(MyEncryptablePropertyDetector.ENCODED_PASSWORD_HINT.length());
+
         }
         return s;
     }

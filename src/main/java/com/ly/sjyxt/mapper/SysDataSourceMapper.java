@@ -1,9 +1,8 @@
 package com.ly.sjyxt.mapper;
 
-import com.ly.sjyxt.entity.DataConnect;
-import com.ly.sjyxt.entity.DataSource;
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.ly.sjyxt.entity.SysDataSource;
 import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -15,7 +14,8 @@ import java.util.List;
  * @author ly
  * @since 2020-06-10
  */
-public interface DataSourceMapper  {
+@Component(value ="DataSourceMapper")
+public interface SysDataSourceMapper {
 
 
   /**
@@ -34,8 +34,8 @@ public interface DataSourceMapper  {
       "  <when  test='db_link_no != null'> and  s.db_link_no = #{db_link_no} </when>   " +
       "  ORDER BY NLSSORT(s.ds_name,'NLS_SORT = SCHINESE_PINYIN_M') "+
       "</script>")
-  List<DataSource> querySysDataSoure(@Param("parameter") String parameter,
-                                     @Param("db_link_no") String db_link_no);
+  List<SysDataSource> querySysDataSoure(@Param("parameter") String parameter,
+                                        @Param("db_link_no") String db_link_no);
 
 
   /**
@@ -66,7 +66,7 @@ public interface DataSourceMapper  {
 
   @Insert({" insert into sys_data_source (DS_ID, DS_NAME, DS_TYPE, DS, REMARKS, DB_LINK_NO, OTHER, CREATE_DATE) " +
       "  values ( #{ds_id},#{ds_name},#{ds_type},#{ds},#{remarks},#{db_link_no},#{other},sysdate )"})
-  int  add (DataSource dataSource);
+  int  add (SysDataSource dataSource);
 
   @Update({" update sys_data_source " +
       "    set DS_NAME = #{ds_name}, " +
@@ -76,6 +76,9 @@ public interface DataSourceMapper  {
       "        DB_LINK_NO  = #{db_link_no}, " +
       "        OTHER = #{other} " +
       "  where DS_ID = #{ds_id} "})
-  int edit(DataSource dataSource);
+  int edit(SysDataSource dataSource);
 
+
+  @Select({" select * from sys_data_source s where s.ds_id =#{ds_id}"})
+  SysDataSource queryById(@Param("ds_id") String ds_id);
 }
